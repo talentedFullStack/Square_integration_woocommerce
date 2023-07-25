@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Plugin Name:       WooCommerce POS
- * Plugin URI:        https://wordpress.org/plugins/woocommerce-pos/
- * Description:       A simple front-end for taking WooCommerce orders at the Point of Sale. Requires <a href="http://wordpress.org/plugins/woocommerce/">WooCommerce</a>.
+ * Plugin Name:       Woocommerce POS Integration
+ * Plugin URI:        https://meeting.lpdevteam.com/
+ * Description:       A simple front-end for taking WooCommerce orders at the Point of Sale. Requires <a href="https://meeting.lpdevteam.com/">WooCommerce</a>.
  * Version:           0.5.0-beta.2
- * Author:            kilbot
- * Author URI:        http://wcpos.com
+ * Author:            Hovhannes
+ * Author URI:        https://meeting.lpdevteam.com/
  * Text Domain:       woocommerce-pos
  * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI:       https://meeting.lpdevteam.com/
  * Domain Path:       /languages
  * WC tested up to:   3.5
  * WC requires at least: 2.3.7
  *
- * @package   WooCommerce POS
- * @author    Paul Kilmurray <paul@kilbot.com.au>
- * @link      http://woopos.com.au
+ * @package   Woocommerce POS Integration
+ * @author    Hovhannes
+ * @link      https://meeting.lpdevteam.com/
  *
  */
 
