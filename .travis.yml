@@ -1,0 +1,73 @@
+sudo: required
+
+language: node_js
+
+node_js:
+  - "node"
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_COMPOSE_VERSION=1.22.0
+    - MYSQL_VERSION=8.0
+    - WP_MULTISITE=0
+    - WP_VERSION=latest
+  matrix:
+    - PHP_VERSION=5.6 WC_VERSION=3.2.6
+    - PHP_VERSION=5.6 WC_VERSION=3.3.5
+    - PHP_VERSION=5.6 WC_VERSION=3.4.4
+    - PHP_VERSION=5.6 WC_VERSION=latest
+    - PHP_VERSION=7.0 WC_VERSION=3.2.6
+    - PHP_VERSION=7.0 WC_VERSION=3.3.5
+    - PHP_VERSION=7.0 WC_VERSION=3.4.4
+    - PHP_VERSION=7.0 WC_VERSION=latest
+    - PHP_VERSION=7.2 WC_VERSION=3.2.6
+    - PHP_VERSION=7.2 WC_VERSION=3.3.5
+    - PHP_VERSION=7.2 WC_VERSION=3.4.4
+    - PHP_VERSION=7.2 WC_VERSION=latest
+
+git:
+  submodules: false
+
+before_install:
+  # first, stop any existing mysql services due to port conflict
+  - sudo service mysql stop
+  # git submodules
+  - echo -e "machine github.com\n  login $CI_USER_TOKEN" >> ~/.netrc
+  - git submodule update --init --recursive
+  # update docker
+  - docker -v
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y install docker-ce
+  - docker -v
+  # update docker-compose
+  - docker-compose -v
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose -v
+
+install:
+  - yarn install && cd client && yarn install
+  - yarn build
+  - yarn start
+
+before_script:
+  - echo "Bootstrap test environment"
+  - until curl --silent -XGET --fail http://localhost; do printf '.'; sleep 1; done
+
+script:
+  - yarn unit-test:client -- --coverage
+  - yarn unit-test:php-${PHP_VERSION}
+  - yarn integration-test:php-${PHP_VERSION}
+
+cache:
+  - yarn
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

@@ -1,0 +1,45 @@
+{
+  "name": "woocommerce-pos",
+  "description": "A simple front-end for taking WooCommerce orders at the Point of Sale.",
+  "version": "0.5.0-beta.2",
+  "private": true,
+  "author": "kilbot",
+  "license": "GPL-3.0+",
+  "homepage": "http://wcpos.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kilbot/WooCommerce-POS.git"
+  },
+  "keywords": [
+    "wordpress",
+    "woocommerce",
+    "ecommerce",
+    "point-of-sale"
+  ],
+  "bugs": {
+    "url": "https://github.com/kilbot/WooCommerce-POS/issues"
+  },
+  "scripts": {
+    "build": "concurrently --kill-others-on-fail \"yarn build:client\" \"yarn build:server\"",
+    "build:client": "cd client && yarn build --force",
+    "build:server": "docker-compose -f .docker/docker-compose.yml build",
+    "dev": "concurrently --kill-others-on-fail \"yarn start\" \"yarn start:client\"",
+    "log": "docker-compose -f .docker/docker-compose.yml logs -f --tail=10",
+    "prettier": "prettier",
+    "start:client": "cd client && yarn start",
+    "start:server": "docker-compose -f .docker/docker-compose.yml up -d",
+    "start": "docker-compose -f .docker/docker-compose.yml up -d",
+    "stop": "docker-compose -f .docker/docker-compose.yml kill",
+    "unit-test:client": "cd client && yarn test",
+    "unit-test:php-5.6": "docker exec woocommerce-pos-php-5.6 phpunit -c plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "unit-test:php-7.0": "docker exec woocommerce-pos-php-7.0 phpunit -c plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "unit-test:php-7.2": "docker exec woocommerce-pos-php-7.2 phpunit -c plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "integration-test:php-5.6": "docker exec woocommerce-pos-php-5.6 phpunit -c plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
+    "integration-test:php-7.0": "docker exec woocommerce-pos-php-7.0 phpunit -c plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
+    "integration-test:php-7.2": "docker exec woocommerce-pos-php-7.2 phpunit -c plugins/woocommerce-pos/tests/integration/php/phpunit.xml"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  }
+}
